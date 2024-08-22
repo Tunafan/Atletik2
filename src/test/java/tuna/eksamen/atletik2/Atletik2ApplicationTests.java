@@ -1,0 +1,13 @@
+package tuna.eksamen.atletik2;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class Atletik2ApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
