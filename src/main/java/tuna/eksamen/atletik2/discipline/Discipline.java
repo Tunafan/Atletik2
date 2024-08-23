@@ -13,4 +13,15 @@ public class Discipline {
     private Long id;
     private String name;
     private int duration; //minutes
+
+    public Discipline() {
+    }
+    public Discipline(String name, int duration) {
+        this.name = name;
+        this.duration = duration;
+    }
+
+    public Discipline(int disciplineID) {
+        this.id = (long) disciplineID;
+    }
 }

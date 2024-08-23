@@ -12,4 +12,19 @@ public class AgeGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String description;
+
+    public AgeGroup() {
+    }
+    public AgeGroup(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+    public AgeGroup(String name){
+        this.name = name;
+    }
+
+    public AgeGroup(int ageGroup) {
+        this.id = (long) ageGroup;
+    }
 }

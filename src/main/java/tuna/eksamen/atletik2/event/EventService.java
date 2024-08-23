@@ -2,7 +2,8 @@ package tuna.eksamen.atletik2.event;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tuna.eksamen.atletik2.discipline.Discipline;
+import tuna.eksamen.atletik2.field.Field;
+import tuna.eksamen.atletik2.timeSlot.TimeSlot;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,21 +26,26 @@ public class EventService {
                 .map(this::convertToDTO)
                 .orElse(null);
     }
-
     public EventDTO createEvent(EventDTO eventDTO) {
-        Event event = new Event(eventDTO.getDiscipline(), eventDTO.isGender(), eventDTO.getAgeGroup(), eventDTO.date(), eventDTO.getStartTime(), eventDTO.getField(), eventDTO.getDescription());
+        Event event = new Event(eventDTO.getDiscipline(), eventDTO.isGender(), eventDTO.getAgeGroup(), eventDTO.getTimeSlot() , eventDTO.getField(), eventDTO.getDescription());
         event = eventRepository.save(event);
         return convertToDTO(event);
+    }
+    public Event saveEvent(Event event) {
+        if (isFieldAvailable(event.getField(), event.getTimeSlot())) {
+            return eventRepository.save(event);
+        } else {
+            throw new IllegalArgumentException("Banen er optaget på dette tidspunkt :(");
+        }
     }
 
     public EventDTO updateEvent(Long id, EventDTO eventDTO) {
         return eventRepository.findById(id)
                 .map(existingEvent -> {
                     existingEvent.setDisciplineID(eventDTO.getDiscipline());
-                    existingEvent.setDate(eventDTO.getDate());
                     existingEvent.setGender(eventDTO.isGender());
                     existingEvent.setAgeGroup(eventDTO.getAgeGroup());
-                    existingEvent.setStartTime(eventDTO.getStartTime());
+                    existingEvent.setTimeSlot(eventDTO.getTimeSlot());
                     existingEvent.setField(eventDTO.getField());
                     existingEvent.setDescription(eventDTO.getDescription());
                     return convertToDTO(eventRepository.save(existingEvent));
@@ -48,18 +54,26 @@ public class EventService {
 
     public void deleteEvent(Long id) {
         eventRepository.deleteById(id);
+
+    }
+
+    private boolean isFieldAvailable(Field field, TimeSlot timeSlot) {
+        List<Event> eventsAtSameTime = eventRepository.findByTimeSlot(timeSlot);
+        System.out.println("Checking availability for field: " + field.getFieldType() + " at time slot: " + timeSlot.getId());
+
+        for (Event existingEvent : eventsAtSameTime) {
+            System.out.println("Existing event at time slot: " + existingEvent.getDescription() + " on field: " + existingEvent.getField().getFieldType());
+            if (existingEvent.getField().equals(field)) {
+                System.out.println("Field is already booked for this time slot.");
+                return false; // Bane optaget
+            }
+        }
+        System.out.println("Field is available.");
+        return true; // Bane ledig
     }
 
     private EventDTO convertToDTO(Event event) {
-        return new EventDTO(event.getId(), event.getDisciplineID(), event.isGender(), event.getAgeGroup(), event.getDate(), event.getStartTime(), event.getField(), event.getDescription());
+        return new EventDTO(event.getId(), event.getDisciplineID(), event.isGender(), event.getAgeGroup(), event.getTimeSlot(), event.getField(), event.getDescription());
 }
 
-// mangler at arbejde videre på Discipline-package
-  //  public Event getEventByDiscipline(Discipline discipline) {
-    //    List<Event> events = eventRepository.findByDisciplineID(discipline);
-      //  if (events.isEmpty()) {
-      //      return null;
-      //  }
-      //  return events.get(0);
-   // }
 }
