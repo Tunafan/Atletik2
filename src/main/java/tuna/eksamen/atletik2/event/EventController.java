@@ -11,10 +11,13 @@ import java.util.List;
 @RequestMapping("/event")
 public class EventController {
 
-    @Autowired
-    private EventService eventService;
+    private final EventService eventService; // meget bedre end @Autowired
 
-    @GetMapping ("/all")
+    public EventController(EventService eventService) {
+        this.eventService = eventService;
+    }
+
+    @GetMapping ("/")
     public ResponseEntity<List<EventDTO>> getAllEvents() {
         List<EventDTO> events = eventService.getAllEvents();
         return ResponseEntity.ok(events);
@@ -25,7 +28,7 @@ public class EventController {
         return ResponseEntity.ok(event);
     }
 
-    @PostMapping ("/create")
+    @PostMapping ("/")
     public ResponseEntity<EventDTO> createEvent(EventDTO eventDTO) {
         EventDTO savedEvent = eventService.createEvent(eventDTO);
         return ResponseEntity.ok(savedEvent);
