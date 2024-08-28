@@ -42,7 +42,7 @@ public class CrashTest implements CommandLineRunner {
         Optional<Field> field = fieldRepository.findById(1L);
         Optional<TimeSlot> timeSlot = timeSlotRepository.findById(25L); // timeslot allerede i brug fra InitData
         Optional<Discipline> discipline = disciplineRepository.findById(1L); // 100m sprint = ID 1
-        Optional<AgeGroup> ageGroup = ageGroupRepository.findById(3L); // 40+ age group = ID 3
+        Optional<AgeGroup> ageGroup = ageGroupRepository.findById(3L); // U20 = ID 3
 
         if (field.isPresent() && timeSlot.isPresent() && discipline.isPresent() && ageGroup.isPresent()) {
             Event newEvent = new Event(

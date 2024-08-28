@@ -146,6 +146,9 @@ public class InitData implements CommandLineRunner {
 
             List<Event> eventList = List.of(
                 new Event(1, true, 3, 11, 1, "100m løb for U20 kvinder"),
+                new Event(15, true, 4, 11, 4, "Kuglestød for senior kvinder"),
+                new Event(15, true, 4, 12, 4, "Kuglestød for senior kvinder"),
+                new Event(15, true, 4, 13, 4, "Kuglestød for senior kvinder"),
                 new Event(1, false, 3, 12, 1, "100m løb for U20 mænd"),
                 new Event(2, true, 3, 13, 1, "200m løb for U20 kvinder"),
                 new Event(2, false, 3, 14, 1, "200m løb for U20 mænd"),

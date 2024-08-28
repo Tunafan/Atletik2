@@ -12,7 +12,7 @@ public class Discipline {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private int duration; //minutes
+    private int duration; //minutter
 
     public Discipline() {
     }
